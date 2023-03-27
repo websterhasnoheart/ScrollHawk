@@ -17,7 +17,7 @@ from zksync2.core.types import ZkBlockParams
 dotenv_file = find_dotenv()
 load_dotenv(dotenv_file)
 ETH_NODE_URL = os.getenv("ETH_NODE_URL")
-ZKSYNC_NETWORK_URL = "https://mainnet.era.zksync.io"
+ZKSYNC_NETWORK_URL = os.getenv("ZKSYNC_NETWORK_URL")
 
 def deposit(private_key, eth, gas_price, priority_fee, gas_limit):
     eth_web3 = Web3(Web3.HTTPProvider(ETH_NODE_URL))
@@ -40,13 +40,13 @@ def check_balance(private_key):
     account: LocalAccount = Account.from_key(private_key)
     zksync_web3 = ZkSyncBuilder.build(ZKSYNC_NETWORK_URL)
     zk_balance = zksync_web3.zksync.get_balance(account.address, EthBlockParams.LATEST.value)
-    return round(w3.fromWei(zk_balance, "ether"),3) 
+    return round(w3.fromWei(zk_balance, "ether"),3)
 
 def transfer_funds(private_key, eth, to_address, gas_price, priority_fee, gas_limit):
     eth_web3 = Web3(Web3.HTTPProvider(ETH_NODE_URL))
     amount = eth
     account: LocalAccount = Account.from_key(private_key)
-    zksync_web3 = ZkSyncBuilder.build("ZKSYNC_NETWORK_URL")
+    zksync_web3 = ZkSyncBuilder.build(ZKSYNC_NETWORK_URL)
     chain_id = zksync_web3.zksync.chain_id
     signer = PrivateKeyEthSigner(account, chain_id)
 
@@ -72,5 +72,3 @@ def transfer_funds(private_key, eth, to_address, gas_price, priority_fee, gas_li
     tx_hash = zksync_web3.zksync.send_raw_transaction(msg)
     tx_receipt = zksync_web3.zksync.wait_for_transaction_receipt(tx_hash, timeout=240, poll_latency=0.5)
     print(f"tx_hash : {tx_hash.hex()}, status: {tx_receipt['status']}")
-
-
