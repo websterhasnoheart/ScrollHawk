@@ -3,15 +3,11 @@ import time
 from web3 import Web3
 from dotenv import find_dotenv, load_dotenv
 
-# You can use any Ethereum node provider here, such as Infura or Alchemy.
 
 dotenv_file = find_dotenv()
 load_dotenv(dotenv_file)
 ETH_NODE_URL = os.getenv("ETH_NODE_URL")
 POLL_INTERVAL_SECONDS = 10  # Adjust this value to set the polling interval.
-
-def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear")
 
 def get_gas_prices():
     w3 = Web3(Web3.HTTPProvider(ETH_NODE_URL))
@@ -27,7 +23,7 @@ def gas_oclock():
     print("Monitoring Ethereum gas prices...")
 
     while True:
-        clear_screen()
+        os.system("cls" if os.name == "nt" else "clear")
         try:
             base_fee, priority_fee = get_gas_prices()
             print(f"Base fee: {base_fee} Gwei | Priority fee: {priority_fee} Gwei")
@@ -35,4 +31,3 @@ def gas_oclock():
             print(f"Error fetching gas prices: {e}")
 
         time.sleep(POLL_INTERVAL_SECONDS)
-

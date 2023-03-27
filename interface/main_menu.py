@@ -2,9 +2,10 @@ import os
 import sys
 from pyfiglet import Figlet
 from pathlib import Path
-from zkSync_menu import zk_main_menu
-from scroll_menu import scroll_main_menu
-from stark_menu import stark_main_menu
+from .zkSync_menu import zk_main_menu
+from .scroll_menu import scroll_main_menu
+from .stark_menu import stark_main_menu
+from core_func.wallets import wallet_list
 
 myDir = os.getcwd()
 sys.path.append(myDir)
@@ -17,11 +18,11 @@ def main_menu():
     os.system("clear")
     print (f.renderText('ScrollHawk'))
     print("Welcome to ScrollHawk\n")
-    print("choose a option")
+    print("choose an option")
     print("""
 [1] Modules
 [2] Config settings
-[3] Exit
+[3] Wallet info
         """)
     option = input("\ninput option: ")
     if option == '1':
@@ -29,7 +30,12 @@ def main_menu():
     elif option == '2':
         config_menu()
     elif option == '3':
-        exit()
+        wallet_list()
+        if os.name == "nt":  # For Windows systems
+            os.system("pause")
+        else:  # For Linux and macOS systems
+            os.system("read -rsp $'Press any key to go back:\\n' -n 1 key")
+            main_menu()
     else:
         print("Invalid inut")
         main_menu()
@@ -58,7 +64,3 @@ def modules_menu():
 
 def config_menu():
     pass
-
-
-if __name__ == '__main__':
-    main_menu()
