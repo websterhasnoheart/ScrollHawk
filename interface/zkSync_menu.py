@@ -26,6 +26,7 @@ def zk_main_menu():
     option = input("\nChoose your option: ")
     if option == '1':
         wallet_data = wallet_list()
+        display_data(wallet_data)
         print("Select a wallet for the interaction \n")
         wallet_index = int(input("Input by index: "))
         eth_amount = float(input("Amount to deposit: "))
@@ -48,3 +49,4 @@ def zk_main_menu():
         else:  # For Linux and macOS systems
             os.system("read -rsp $'Press any key to go back:\\n' -n 1 key")
             zk_main_menu()
+        
