@@ -43,4 +43,8 @@ def zk_main_menu():
         wallet_address = wallet_data[wallet_index]["address"]
         wallet_name = wallet_data[wallet_index]["name"]
         deposit(private_key, eth_amount, gas_price, priority_fee, gas_limit)
-        
+        if os.name == "nt":  # For Windows systems
+            os.system("pause")
+        else:  # For Linux and macOS systems
+            os.system("read -rsp $'Press any key to go back:\\n' -n 1 key")
+            zk_main_menu()
