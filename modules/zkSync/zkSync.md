@@ -1,4 +1,4 @@
-### ScrollHawk - zkSync supported modules
+### ScrollHawk - zkSync support modules
 
 1. Bridge deposit
 2. Bridge swap
