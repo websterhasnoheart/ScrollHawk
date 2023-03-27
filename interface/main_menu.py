@@ -5,7 +5,7 @@ from pathlib import Path
 from .zkSync_menu import zk_main_menu
 from .scroll_menu import scroll_main_menu
 from .stark_menu import stark_main_menu
-from core_func.wallets import wallet_list
+from core_func.wallets import wallet_list, display_data
 
 myDir = os.getcwd()
 sys.path.append(myDir)
@@ -30,7 +30,7 @@ def main_menu():
     elif option == '2':
         config_menu()
     elif option == '3':
-        wallet_list()
+        display_data(wallet_list())
         if os.name == "nt":  # For Windows systems
             os.system("pause")
         else:  # For Linux and macOS systems
