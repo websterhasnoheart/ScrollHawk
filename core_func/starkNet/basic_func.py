@@ -27,7 +27,7 @@ def get_contract_abi(contract_address):
         print("Error:", response_data["message"])
 # **********************************************************************
 
-def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_price, priority_fee, gas_limit):
+def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_price, priority_fee, gas_limit, bridge_fee = 0):
     w3 = Web3(Web3.HTTPProvider(ETH_NODE_URL))
     account = Account.from_key(private_key)
     abi = get_contract_abi(STARKNET_BRIDGE_CONTRACT)
@@ -42,22 +42,33 @@ def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_pric
 
     # As there are 2 deposit() in the smart contract, prepare 2 groups of params
     function_name = "deposit"
-    function_argument_types_1 = ("uint256")
+    # function_argument_types_1 = ("uint256")
     function_arguments_1 = (dec_address,)
-    function_argument_types_2 = ("uint256, uint256")
+    # function_argument_types_2 = ("uint256, uint256")
     function_arguments_2 = (wei_amount,dec_address)
 
-    transaction_data = proxy_contract_instance.functions[function_name](*function_arguments_1).buildTransaction({
-        "from": from_address,
-        "to" : to_address,
-        "value" : eth_amount,
-        "gas": gas_limit, # gas limit
-        "gasPrice": gas_price, #base gas (wei)
-        "maxPriorityFeePerGas" : priority_fee 
-        "nonce": w3.eth.getTransactionCount(from_address),
-    })
+    # Build transactions with customized bridge fee
+    if bridge_fee == 0:
+        transaction_data = proxy_contract_instance.functions[function_name](*function_arguments_1).buildTransaction({
+            "from": from_address,
+            "to" : to_address,
+            "value" : eth_amount,
+            "gas": gas_limit, # gas limit
+            "gasPrice": gas_price, #base gas (wei)
+            "maxPriorityFeePerGas" : priority_fee,
+            "nonce": w3.eth.getTransactionCount(from_address),
+        })
+    else:
+        transaction_data = proxy_contract_instance.functions[function_name](*function_arguments_2).buildTransaction({
+            "from": from_address,
+            "to" : to_address,
+            "value" : eth_amount + float(bridge_fee),
+            "gas": gas_limit, # gas limit
+            "gasPrice": gas_price, #base gas (wei)
+            "maxPriorityFeePerGas" : priority_fee,
+            "nonce": w3.eth.getTransactionCount(from_address),
+        })
 
-    
     # Sign and send the transaction if you have the private key
     signed_transaction = account.signTransaction(transaction_data, private_key)
     transaction_hash = w3.eth.sendRawTransaction(signed_transaction.rawTransaction)
@@ -69,6 +80,9 @@ def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_pric
         print(f"Transaction successful! Transaction hash: {transaction_hash.hex()}")
     else:
         print("Transaction failed.")
+
+def orbiter_bridge_deposit():
+    pass
 
 if __name__ == '__main__':
     private_key = '0xdfcd60210f90ed2494639bd29d9aaaf746d3093bb5f21e8e40e3924d12e46fc1'
