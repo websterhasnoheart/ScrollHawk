@@ -39,6 +39,9 @@ def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_pric
     #Units convert
     dec_address = int(to_address, 16)
     wei_amount = Web3.toWei(eth_amount, 'ether')
+    eth_amount = Web3.toWei(eth_amount, 'ether')
+    gas_price = Web3.toWei(gas_price, 'gwei')
+    priority_fee = Web3.toWei(priority_fee, 'gwei')
 
     # As there are 2 deposit() in the smart contract, prepare 2 groups of params
     function_name = "deposit"
@@ -46,31 +49,29 @@ def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_pric
     function_arguments_1 = (dec_address,)
     # function_argument_types_2 = ("uint256, uint256")
     function_arguments_2 = (wei_amount,dec_address)
-
+    
     # Build transactions with customized bridge fee
     if bridge_fee == 0:
         transaction_data = proxy_contract_instance.functions[function_name](*function_arguments_1).buildTransaction({
             "from": from_address,
-            "to" : to_address,
             "value" : eth_amount,
             "gas": gas_limit, # gas limit
-            "gasPrice": gas_price, #base gas (wei)
+            "maxFeePerGas": gas_price, #base gas (wei), old gasPrice should not be used anymore
             "maxPriorityFeePerGas" : priority_fee,
             "nonce": w3.eth.getTransactionCount(from_address),
         })
     else:
         transaction_data = proxy_contract_instance.functions[function_name](*function_arguments_2).buildTransaction({
             "from": from_address,
-            "to" : to_address,
             "value" : eth_amount + float(bridge_fee),
             "gas": gas_limit, # gas limit
-            "gasPrice": gas_price, #base gas (wei)
+            "maxFeePerGas": gas_price, #base gas (wei)
             "maxPriorityFeePerGas" : priority_fee,
             "nonce": w3.eth.getTransactionCount(from_address),
         })
-
+    
     # Sign and send the transaction if you have the private key
-    signed_transaction = account.signTransaction(transaction_data, private_key)
+    signed_transaction = account.signTransaction(transaction_data)
     transaction_hash = w3.eth.sendRawTransaction(signed_transaction.rawTransaction)
 
     # Wait for the transaction to be confirmed
@@ -88,8 +89,8 @@ if __name__ == '__main__':
     private_key = '0xdfcd60210f90ed2494639bd29d9aaaf746d3093bb5f21e8e40e3924d12e46fc1'
     from_address = '0x0e552d0B3562806d1546B2f6b25cD973Ec65E4B9'
     to_address = '0x053B90D17b1F54dCe5A436C85B8c48724103a6e72e85734c8d7aEe461B5ac5c8'
-    eth_amount = 0.01
-    gas_price = 35
-    priority_fee = 0.5
+    eth_amount = 0.05
+    gas_price = 28
+    priority_fee = 0.2
     gas_limit = 170000
     starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_price, priority_fee, gas_limit)
