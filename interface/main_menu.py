@@ -5,7 +5,7 @@ from pathlib import Path
 from .zkSync_menu import zk_main_menu
 from .scroll_menu import scroll_main_menu
 from .stark_menu import stark_main_menu
-from core_func.wallets import wallet_list, display_data
+from utils.wallets import wallet_list, display_data
 
 myDir = os.getcwd()
 sys.path.append(myDir)
