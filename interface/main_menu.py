@@ -35,6 +35,7 @@ def main_menu():
             os.system("pause")
         else:  # For Linux and macOS systems
             os.system("read -rsp $'Press any key to go back:\\n' -n 1 key")
+            os.system("clear")
             main_menu()
     else:
         print("Invalid inut")
@@ -48,7 +49,8 @@ def modules_menu():
     print("""
 [1] zkSync
 [2] Starknet
-[3] Scroll
+[3] layerZero
+[4] Back
         """)
     option = input("\nYour option: ")
     if option == '1':
@@ -57,6 +59,8 @@ def modules_menu():
         stark_main_menu()
     elif option == '3':
         scroll_main_menu()
+    elif option == '4':
+        main_menu()
     else:
         print("Invalid inut")
         modules_menu()

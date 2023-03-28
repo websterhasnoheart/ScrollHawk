@@ -2,9 +2,9 @@ import os
 import sys
 from pyfiglet import Figlet
 from pathlib import Path
-from core_func.wallets import wallet_list, display_data
+from utils.wallets import wallet_list, display_data
 from core_func.zkSync.basic_func import deposit, transfer_funds
-from core_func.gas_price import get_gas_prices
+from utils.gas_price import get_gas_prices
 import time
 
 myDir = os.getcwd()
@@ -64,10 +64,10 @@ def zk_main_menu():
         while True:
             gas_price, priority_fee = get_gas_prices()
             if expected_gas >= gas_price:
-                break
-            else:
                 print(f"Current gas price ({gas_price} Gwei) is higher than expected gas price ({expected_gas} Gwei). Waiting for gas price to decrease...")
                 time.sleep(120)
+            else:
+                break
 
         private_key = wallet_data[wallet_index]["privatekey"]
         wallet_address = wallet_data[wallet_index]["address"]
