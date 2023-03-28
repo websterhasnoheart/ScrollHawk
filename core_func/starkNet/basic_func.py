@@ -14,7 +14,7 @@ ETHERSCAN_API = os.getenv("ETHERSCAN_API")
 import requests
 import json
 
-
+# **************************** TO BE REMOVED ****************************
 def get_contract_abi(contract_address):
     url = f"https://api.etherscan.io/api?module=contract&action=getabi&address={contract_address}&apikey={ETHERSCAN_API}"
     response = requests.get(url)
@@ -25,7 +25,7 @@ def get_contract_abi(contract_address):
         return contract_abi
     else:
         print("Error:", response_data["message"])
-        
+# **********************************************************************
 
 def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_price, priority_fee, gas_limit):
     w3 = Web3(Web3.HTTPProvider(ETH_NODE_URL))
@@ -53,7 +53,7 @@ def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_pric
         "value" : eth_amount,
         "gas": gas_limit, # gas limit
         "gasPrice": gas_price, #base gas (wei)
-        "maxPriorityFeePerGas" : priority_fee
+        "maxPriorityFeePerGas" : priority_fee 
         "nonce": w3.eth.getTransactionCount(from_address),
     })
 
