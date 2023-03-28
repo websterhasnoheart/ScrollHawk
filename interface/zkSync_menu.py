@@ -16,9 +16,9 @@ gas_limit = 500000
 
 
 def zk_main_menu():
-    f = Figlet(font = 'standard', width=160)
+    f = Figlet(font='standard', width=160)
     os.system("clear")
-    print (f.renderText('z k S y n c'))
+    print(f.renderText('z k S y n c'))
     print("choose an option")
     print("""
 [1] ETH Deposit
@@ -39,7 +39,8 @@ def zk_main_menu():
             if expected_gas >= gas_price:
                 break
             else:
-                print(f"Current gas price ({gas_price} Gwei) is higher than expected gas price ({expected_gas} Gwei). Waiting for gas price to decrease...")
+                print(
+                    f"Current gas price ({gas_price} Gwei) is higher than expected gas price ({expected_gas} Gwei). Waiting for gas price to decrease...")
                 time.sleep(120)
 
         private_key = wallet_data[wallet_index]["privatekey"]
@@ -64,7 +65,8 @@ def zk_main_menu():
         while True:
             gas_price, priority_fee = get_gas_prices()
             if expected_gas >= gas_price:
-                print(f"Current gas price ({gas_price} Gwei) is higher than expected gas price ({expected_gas} Gwei). Waiting for gas price to decrease...")
+                print(
+                    f"Current gas price ({gas_price} Gwei) is higher than expected gas price ({expected_gas} Gwei). Waiting for gas price to decrease...")
                 time.sleep(120)
             else:
                 break
@@ -72,7 +74,8 @@ def zk_main_menu():
         private_key = wallet_data[wallet_index]["privatekey"]
         wallet_address = wallet_data[wallet_index]["address"]
         wallet_name = wallet_data[wallet_index]["name"]
-        transfer_funds(private_key, eth_amount, to_address, gas_price, priority_fee, gas_limit)
+        transfer_funds(private_key, eth_amount, to_address,
+                       gas_price, priority_fee, gas_limit)
         if os.name == "nt":  # For Windows systems
             os.system("pause")
         else:  # For Linux and macOS systems

@@ -6,6 +6,7 @@ from .zkSync_menu import zk_main_menu
 from .scroll_menu import scroll_main_menu
 from .stark_menu import stark_main_menu
 from utils.wallets import wallet_list, display_data
+from utils.gas_price import get_gas_prices
 
 myDir = os.getcwd()
 sys.path.append(myDir)
@@ -13,12 +14,13 @@ path = Path(myDir)
 abs_path = str(path.parent.absolute())
 sys.path.append(abs_path)
 
+
 def main_menu():
-    f = Figlet(font = 'slant')
+    f = Figlet(font='slant')
     os.system("clear")
-    print (f.renderText('ScrollHawk'))
-    print("Welcome to ScrollHawk\n")
-    print("choose an option")
+    print(f.renderText('ScrollHawk'))
+    base_fee, priority_fee = get_gas_prices()
+    print(f'Current gas fee: {base_fee} gwei | Priority fee {priority_fee} gwei')
     print("""
 [1] Modules
 [2] Config settings
@@ -41,11 +43,12 @@ def main_menu():
         print("Invalid inut")
         main_menu()
 
+
 def modules_menu():
-    f = Figlet(font = 'slant')
+    f = Figlet(font='slant')
     os.system("clear")
-    print (f.renderText('ScrollHawk'))
-    print("\nchoose a module and start grinding: \n")
+    print(f.renderText('ScrollHawk'))
+    print("choose a module and start grinding: ")
     print("""
 [1] zkSync
 [2] Starknet

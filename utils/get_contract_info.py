@@ -12,4 +12,3 @@ def get_contract_abi(contract_address):
         return contract_abi
     else:
         print("Error:", response_data["message"])
-        
