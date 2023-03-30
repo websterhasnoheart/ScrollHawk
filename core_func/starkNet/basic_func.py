@@ -10,6 +10,7 @@ ETH_NODE_URL = os.getenv("ETH_NODE_URL")
 STARKNET_BRIDGE_CONTRACT = os.getenv("STARKNET_BRIDGE_CONTRACT")
 STARKNET_BRIDGE_PROXY_CONTRACT = os.getenv("STARKNET_BRIDGE_PROXY_CONTRACT")
 ETHERSCAN_API = os.getenv("ETHERSCAN_API")
+STARKNET_CORE_CONTRACT = '0x739A654271c565839F0408546706bBea2F1FfE42'
 
 
 def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_price, priority_fee, gas_limit, bridge_fee=0):
@@ -74,3 +75,7 @@ def starkNet_deposit(private_key, from_address, to_address, eth_amount, gas_pric
 
 def orbiter_bridge_deposit():
     pass
+
+
+if __name__ == '__main__':
+    get_msg_fee()
